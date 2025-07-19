@@ -1,6 +1,7 @@
 # Classic Binary Search
 
 ## Leetcode Problem
+[Leetcode Problem](https://leetcode.com/problems/problems/binary-search/description/)
 
 ## Problem Description
 Given an array of integers `nums` which is sorted in ascending order, and an integer `target`, write a function to search `target` in `nums`. If `target` exists, then return its index. Otherwise, return `-1`.
