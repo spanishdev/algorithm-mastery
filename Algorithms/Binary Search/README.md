@@ -50,6 +50,9 @@ fun binarySearch(nums: IntArray, target: Int): Int {
 ### Easy Problems
 
 ### Medium Problems
+- [Search a 2D Matrix](./Problems/Medium/Search2dMatrix_1.md)
+- [Find First and Last Position](./Problems/Medium/FindFirstLastPosition.md)
+- [Find Peak Element](./Problems/Medium/FindPeakElement.md)
 
 ## Common Variations
 
@@ -81,4 +84,16 @@ start = mid + 1  // Exclude mid from next iteration
 | **Boundary Direction** | `nums[mid] > target → start = mid + 1` | `nums[mid] > target → end = mid - 1` |
 | **Index Bounds** | `mid + 1` without checking | Check `mid < nums.size - 1` |
 | **Empty Array** | No check | `if (nums.isEmpty()) return -1` |
+
+## Implementation Tips
+- Always handle edge cases (empty arrays, single elements)
+- Use clear variable names (start/end vs left/right)
+- Consistent boundary updates (mid ± 1)
+- Test with small arrays first
+
+## Advanced Applications
+- 2D Matrix Search - Treat as flattened 1D array
+- Rotated Arrays - Modified comparison logic
+- Peak Finding - Gradient-based elimination
+- Range Queries - Multiple coordinated searches
 
