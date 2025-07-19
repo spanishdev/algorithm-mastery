@@ -51,7 +51,7 @@ fun binarySearch(nums: IntArray, target: Int): Int {
 
 ### Medium Problems
 - [Search a 2D Matrix](./Problems/Medium/Search2dMatrix_1.md)
-- [Find First and Last Position](./Problems/Medium/FindFirstLastPosition.md)
+- [Find First and Last Position](./Problems/Medium/FindFirstLastElemSortedArray.md)
 - [Find Peak Element](./Problems/Medium/FindPeakElement.md)
 
 ## Common Variations
