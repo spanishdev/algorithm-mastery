@@ -24,71 +24,67 @@ Output: [0,0]
 - Single occurrence returns `[index, index]`
 - Requires **multiple binary searches** or **modified binary search logic**
 
-### Solution Approach (Your Implementation)
+### Solution Approach
 
-**Three-phase algorithm:**
-1. **Find any occurrence** of target (standard binary search)
-2. **Find leftmost occurrence** (search from start to found index)
-3. **Find rightmost occurrence** (search from found index to end)
+**Two-phase algorithm:**
+1. **Find leftmost occurrence** 
+2. **Find rightmost occurrence**
 
 **Complexity Analysis**
 Time: O(log n) - Three separate binary searches
 Space: O(1) - Only using primitive variables
 
-### Your Code Solution
+### Solution
+
 ```kotlin
-fun intervalElement(nums: IntArray, target: Int): List<Int> {
+fun searchRange(nums: IntArray, target: Int): IntArray {
+    val first = findFirst(nums, target)
+    if (first == -1) return intArrayOf(-1, -1)
+    
+    val last = findLast(nums, target)
+    return intArrayOf(first, last)
+}
+
+// Find leftmost occurrence
+fun findFirst(nums: IntArray, target: Int): Int {
     var start = 0
     var end = nums.size - 1
-    var targetIndex = 0
+    var result = -1
     
-    // Phase 1: Find any target index
-    while(start <= end) {
-        targetIndex = (start+end)/2
+    while (start <= end) {
+        val mid = (start + end) / 2
         when {
-            nums[targetIndex] == target -> break
-            nums[targetIndex] < target -> start = targetIndex + 1
-            nums[targetIndex] > target -> end = targetIndex - 1
+            nums[mid] == target -> {
+                result = mid      // Found it, but keep searching LEFT
+                end = mid - 1     // Continue searching left half
+            }
+            nums[mid] < target -> start = mid + 1
+            nums[mid] > target -> end = mid - 1
         }
     }
     
-    var first = -1
-    var last = -1
+    return result
+}
+
+// Find rightmost occurrence  
+fun findLast(nums: IntArray, target: Int): Int {
+    var start = 0
+    var end = nums.size - 1
+    var result = -1
     
-    if(nums[targetIndex] == target) {
-        // Phase 2: Search for first occurrence
-        start = 0 
-        end = targetIndex
-        
-        while(start <= end) {
-            val mid = (start+end)/2
-            when {
-                nums[mid] == target -> {
-                    first = mid
-                    end = mid - 1
-                }
-                nums[mid] < target -> start = mid + 1
+    while (start <= end) {
+        val mid = (start + end) / 2
+        when {
+            nums[mid] == target -> {
+                result = mid      // Found it, but keep searching RIGHT
+                start = mid + 1   // Continue searching right half
             }
-        }
-        
-        // Phase 3: Search for last occurrence  
-        last = first
-        start = targetIndex
-        end = nums.size - 1
-        
-        while(start <= end) {
-            val mid = (start+end)/2
-            when {
-                nums[mid] == target -> {
-                    last = mid 
-                    start = mid + 1
-                }
-                nums[mid] > target -> end = mid - 1
-            }
+            nums[mid] < target -> start = mid + 1
+            nums[mid] > target -> end = mid - 1
         }
     }
     
-    return listOf(first, last)
+    return result
 }
 ```
 
