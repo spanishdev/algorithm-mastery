@@ -7,7 +7,7 @@ Here are the notes regarding coding problems. Data structures, algorithms and pa
   
 ## Data structures covered
 - [Arrays](./Data%20Structures/Arrays.md)
-- [LRU Cache](./Data%20Structures/LRUCache.md)
+- [LRU Cache](./data_structures/LRUCache.md)
 
 ## Patterns Covered
 - [Binary Search](./Algorithms/Binary%20Search/README.md)
