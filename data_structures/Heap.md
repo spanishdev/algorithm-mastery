@@ -196,3 +196,52 @@ class Heap<T: Comparable<T>>(private val type: HeapType = HeapType.MIN) {
 }
 ```
 
+## Using Kotlin's PriorityQueue
+
+| **Custom Heap** | **PriorityQueue** | **Description** |
+| insert()        | add() / offer()   | Insert element  |
+| extract()       | poll() / remove() | Extract root    |
+| peek()          | peek()            | View root       |
+
+### Basic usage
+
+```kotlin
+import java.util.PriorityQueue
+
+// Min Heap (default)
+val minHeap = PriorityQueue<Int>()
+minHeap.add(10)
+minHeap.add(5)
+minHeap.add(20)
+println(minHeap.poll()) // 5
+
+// Max Heap using reverseOrder()
+val maxHeap = PriorityQueue<Int>(reverseOrder())
+maxHeap.addAll(listOf(10, 5, 20))
+println(maxHeap.poll()) // 20
+```
+
+### Custom Comparators
+
+```kotlin
+// Custom comparator for max heap
+val maxHeap = PriorityQueue<Int> { a, b -> b.compareTo(a) }
+
+// Objects with custom comparison
+data class Task(val priority: Int, val name: String)
+
+// Min heap by priority
+val taskQueue = PriorityQueue<Task>(compareBy { it.priority })
+
+// Max heap by priority, then by name
+val complexQueue = PriorityQueue<Task>(
+    compareByDescending<Task> { it.priority }.thenBy { it.name }
+)
+
+// Multiple criteria
+val heap = PriorityQueue<Person>(
+    compareBy<Person> { it.age }.thenBy { it.name }
+)
+```
+
+
