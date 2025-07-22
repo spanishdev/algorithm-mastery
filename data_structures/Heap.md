@@ -199,6 +199,7 @@ class Heap<T: Comparable<T>>(private val type: HeapType = HeapType.MIN) {
 ## Using Kotlin's PriorityQueue
 
 | **Custom Heap** | **PriorityQueue** | **Description** |
+| --------------- | ----------------- | --------------- |
 | insert()        | add() / offer()   | Insert element  |
 | extract()       | poll() / remove() | Extract root    |
 | peek()          | peek()            | View root       |
