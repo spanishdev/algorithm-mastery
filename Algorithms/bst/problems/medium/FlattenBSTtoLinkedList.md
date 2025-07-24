@@ -209,4 +209,27 @@ fun flatten(root: TreeNode?): Unit {
 ```
 
 #### Implementation
-
+```kotlin
+ fun flattenMorris(root: TreeNode?): Unit {
+        var current = root
+        
+        while (current != null) {
+            if (current.left != null) {
+                // Find the rightmost node in left subtree
+                var rightmost = current.left
+                while (rightmost?.right != null) {
+                    rightmost = rightmost.right
+                }
+                
+                // Connect rightmost to current's right subtree
+                rightmost?.right = current.right
+                
+                // Move left subtree to right
+                current.right = current.left
+                current.left = null
+            }
+            
+            current = current.right
+        }
+    }
+```
