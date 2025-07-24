@@ -119,3 +119,63 @@ fun levelOrder(root: TreeNode?): List<List<Int>> {
 }
 
 ```
+
+Or another variant
+
+```kotlin
+class Solution {
+    fun levelOrder(root: TreeNode?): List<List<Int>> {
+        val result: MutableList<List<Int>> = mutableListOf()
+        if(root == null) return result
+
+        val queue = ArrayDeque<TreeNode>()
+        queue.add(root)
+
+        while(!queue.isEmpty()) {
+            val list: MutableList<Int> = mutableListOf()
+            var steps = queue.size
+
+            while(steps > 0) {
+                val node = queue.removeFirst()
+                list.add(node.`val`)
+                node.left?.let(queue::add)
+                node.right?.let(queue::add)
+                steps--
+            }
+
+            result.add(list)
+        }
+        return result
+    }
+}
+```
+
+Or more simplier
+
+```kotlin
+fun levelOrder(root: TreeNode?): List<List<Int>> {
+    if (root == null) return emptyList()
+    
+    val result = mutableListOf<List<Int>>()
+    val queue = ArrayDeque<TreeNode>()
+    queue.add(root)
+    
+    while (queue.isNotEmpty()) {
+        val levelSize = queue.size
+        val currentLevel = mutableListOf<Int>()
+        
+        repeat(levelSize) {  // ← repeat en lugar de while manual
+            val node = queue.removeFirst()
+            currentLevel.add(node.`val`)
+            
+            node.left?.let { queue.add(it) }
+            node.right?.let { queue.add(it) }
+        }
+        
+        result.add(currentLevel)  // ← Sin toList()
+    }
+    
+    return result
+}
+
+```
