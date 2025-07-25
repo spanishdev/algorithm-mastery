@@ -141,4 +141,28 @@ fun mergeKListsDivideConquer(lists: Array<ListNode?>): ListNode? {
       
       return mergeTwoLists(left, right)
   }
+
+  // Helper function: Merge two sorted lists
+    private fun mergeTwoLists(l1: ListNode?, l2: ListNode?): ListNode? {
+        val dummy = ListNode(0)
+        var current = dummy
+        var p1 = l1
+        var p2 = l2
+        
+        while (p1 != null && p2 != null) {
+            if (p1.`val` <= p2.`val`) {
+                current.next = p1
+                p1 = p1.next
+            } else {
+                current.next = p2
+                p2 = p2.next
+            }
+            current = current.next!!
+        }
+        
+        // Attach remaining nodes
+        current.next = p1 ?: p2
+        
+        return dummy.next
+    }
 ```
