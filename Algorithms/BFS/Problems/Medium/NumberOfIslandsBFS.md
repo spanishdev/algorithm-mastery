@@ -97,45 +97,47 @@ data class Cell(val row: Int, val column: Int) {
 ```kotlin
 // BFS Solution - Modifying grid in-place
 fun numIslandsBFS(grid: Array<CharArray>): Int {
-    var islandCount = 0
-    val queue = ArrayDeque<Cell>()
-    
-    for(i in grid.indices) {
-        for(j in grid[i].indices) {
-            val cell = Cell(i, j)
-            if(cell.getValue(grid) == '0') continue
-            
-            // Marcar como visitado ANTES de añadir a queue
-            grid[i][j] = '0'
-            queue.add(cell)
-            
-            while(!queue.isEmpty()) {
-                with(queue.removeFirst()) {
-                    // Explorar vecinos
-                    val neighbors = listOf(
-                        Cell(row, column - 1),
-                        Cell(row, column + 1), 
-                        Cell(row - 1, column),
-                        Cell(row + 1, column)
+        if(grid.isEmpty()) return 0
+
+        val queue = ArrayDeque<Pair<Int, Int>>()
+        var islands = 0
+        for(row in grid.indices) {
+            for(column in grid[row].indices) {
+                if(grid[row][column] == '0') continue
+
+                islands++
+                grid[row][column] = '0'
+
+                 queue.add(Pair(row, column))
+
+                 while(!queue.isEmpty()) {
+                    val current = queue.removeFirst()
+
+                    val currentRow = current.first
+                    val currentColumn = current.second
+
+                    val neightbours = listOf(
+                        Pair(currentRow - 1, currentColumn),
+                        Pair(currentRow + 1, currentColumn),
+                        Pair(currentRow, currentColumn + 1),
+                        Pair(currentRow, currentColumn - 1),
                     )
-                    
-                    neighbors.forEach { neighbor ->
-                        if (neighbor.row in 0 until grid.size && 
-                            neighbor.column in 0 until grid[0].size &&
-                            neighbor.getValue(grid) == '1') {
-                            
-                            grid[neighbor.row][neighbor.column] = '0' // Marcar como visitado
-                            queue.add(neighbor)
+
+                    for(pair in neightbours) {
+                        val r = pair.first
+                        val c = pair.second
+
+                        if(r in grid.indices && c in grid[row].indices && grid[r][c] != '0') {
+                            grid[r][c] = '0'
+                            queue.add(pair)
                         }
                     }
-                }
+                   
+                 }
             }
-            
-            islandCount++
         }
+
+        return islands
     }
-    
-    return islandCount
-}
 
 ```
