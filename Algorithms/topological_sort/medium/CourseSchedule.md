@@ -52,8 +52,24 @@ To take course 1 you should have finished course 0, and to take course 0 you sho
 - Check if we processed all courses:
   - If yes → no cycles exist → return true
   - If no → cycles exist → return false
-
+  - 
+###  DFS with Cycle Detection
+DFS approach uses graph coloring to detect back edges (cycles):
+- Build the dependency graph from prerequisites
+- Use three-color DFS traversal:
+  - PENDING (white): Unvisited node
+  - PROCESSING (gray): Currently being visited (in recursion stack)
+  - FINISHED (black): Completely processed
+- For each unvisited course, **start DFS**
+  - Mark current course as PROCESSING
+  - Recursively visit all dependent courses
+  - If we encounter a PROCESSING node → cycle detected → return false
+  - Mark current course as FINISHED when done
+- If no cycles found in any DFS traversal → return true
+ 
 ## Complexity Analysis
+
+### Kahn's Algorithm
 - Time Complexity: O(V + E) where V = numCourses and E = prerequisites.length
   - Building the graph: O(E)
   - Processing each course: O(V)
@@ -63,6 +79,15 @@ To take course 1 you should have finished course 0, and to take course 0 you sho
   - Graph storage: O(E)
   - Indegree array: O(V)
   - Queue: O(V) in worst case
+
+### DFS Approach:
+- Time Complexity: O(V + E) where V = numCourses and E = prerequisites.length
+  - Building the graph: O(E)
+  - DFS traversal visits each node and edge exactly once: O(V + E)
+- Space Complexity: O(V + E)
+  - Graph storage: O(E)
+  - State array: O(V)
+  - Recursion stack: O(V) in worst case (for deep graphs)
 
 ## Solution
 
@@ -105,5 +130,46 @@ fun canFinish(numCourses: Int, prerequisites: Array<IntArray>): Boolean {
     
     // Step 5: Check if we could take all courses
     return coursesDone == numCourses
+}
+```
+### Approach 2: DFS with Cycle Detection
+
+```kotlin
+enum class Status { FINISHED, PROCESSING, PENDING }
+
+fun canFinish(numCourses: Int, prerequisites: Array<IntArray>): Boolean {
+    val graph = Array(numCourses) { mutableListOf<Int>() }
+    val state = Array(numCourses) { Status.PENDING }
+    
+    // Build the dependency graph
+    for(prereq in prerequisites) {
+        val course = prereq[0]
+        val dependency = prereq[1]
+        graph[dependency].add(course)
+    }
+    
+    // Check for cycles starting from each unvisited course
+    for(i in 0 until numCourses) {
+        if(state[i] == Status.PENDING && !canFinishDFS(i, state, graph)) {
+            return false
+        }
+    }
+    return true
+}
+
+//If detects a cycle, returns false
+fun canFinishDFS(current: Int, state: Array<Status>, graph: Array<MutableList<Int>>): Boolean {
+    state[current] = Status.PROCESSING  // Mark as currently being processed
+    
+    for(dependent in graph[current]) {
+        if(state[dependent] == Status.FINISHED) continue  // Already processed
+        if(state[dependent] == Status.PROCESSING ||       // Cycle detected!
+           !canFinishDFS(dependent, state, graph)) {
+            return false
+        }
+    }
+    
+    state[current] = Status.FINISHED  // Mark as completely processed
+    return true
 }
 ```
